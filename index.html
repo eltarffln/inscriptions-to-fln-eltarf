@@ -1,130 +1,144 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <base target="_self">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حزب جبهة التحرير الوطني - محافظة الطارف - الانخراط الإلكتروني</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حزب جبهة التحرير الوطني - محافظة الطارف</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#006633"
-                    }
-                }
-            }
-        }
-    </script>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Noto+Sans+Arabic:wght@400;600&display=swap');
+  <style>
+    body { font-family: 'Noto Sans Arabic', sans-serif; }
+    .title-font { font-family: 'Amiri', serif; }
 
-        body {
-            font-family: 'Noto Sans Arabic', sans-serif;
-        }
-        .title-font {
-            font-family: 'Amiri', serif;
-        }
-        .hero-bg {
-            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOLf3oz7WXiDuTyMIV9LBLjAtZIjM6i4N10A&s');
-            background-size: cover;
-            background-position: center;
-        }
-        .hero-overlay {
-            background: linear-gradient(to right, rgba(0,102,51,0.9), rgba(0,102,51,0.7));
-        }
-    </style>
+    /* Slider */
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+    .slide {
+      min-width: 100%;
+      scroll-snap-align: center;
+    }
+    .slider::-webkit-scrollbar { display: none; }
+
+    /* Arrows */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #006633;
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+    .arrow.left { left: 10px; }
+    .arrow.right { right: 10px; }
+  </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
 
-<!-- ================= HEADER ================= -->
-<header class="bg-primary text-white">
-  <div class="container mx-auto px-2 py-4">
+<!-- ===== HEADER النهائي ===== -->
+<header class="bg-[#006633] text-white">
 
-    <div class="flex items-center justify-between">
+  <div class="container mx-auto px-4 py-12 text-center">
 
-      <!-- Right Logo -->
-      <img
-        src="https://fln.dz/wp-content/uploads/2022/09/logo-fln.png"
-        class="w-14 h-14 sm:w-16 sm:h-16 md:w-32 md:h-32 object-contain"
-        alt="شعار">
+    <!-- اللوقو -->
+    <img
+      src="https://fln.dz/wp-content/uploads/2022/09/logo-fln.png"
+      class="mx-auto w-28 sm:w-36 md:w-48 object-contain mb-6"
+      alt="شعار حزب جبهة التحرير الوطني">
 
-      <!-- Center Title -->
-      <div class="text-center px-2">
-        <h1 class="title-font font-bold
-                   text-base sm:text-lg md:text-5xl
-                   leading-snug whitespace-nowrap">
-          حزب جبهة التحرير الوطني
-        </h1>
-        <p class="title-font
-                  text-sm sm:text-base md:text-2xl">
-          محافظة الطارف
-        </p>
-      </div>
+    <!-- حزب -->
+    <h1 class="title-font font-bold
+               text-2xl sm:text-4xl md:text-6xl
+               mb-3">
+      حزب جبهة التحرير الوطني
+    </h1>
 
-      <!-- Left Logo -->
-      <img
-        src="https://fln.dz/wp-content/uploads/2022/09/logo-fln.png"
-        class="w-14 h-14 sm:w-16 sm:h-16 md:w-32 md:h-32 object-contain"
-        alt="شعار">
-
-    </div>
+    <!-- محافظة -->
+    <p class="title-font
+              text-lg sm:text-2xl md:text-3xl">
+      محافظة الطارف
+    </p>
 
   </div>
 </header>
-<!-- ================= ABOUT / SWIPE (NO SCROLLBAR) ================= -->
-<section class="hero-bg">
-  <div class="hero-overlay">
 
-    <div class="container mx-auto px-4 py-16 text-white">
+<!-- ===== SLIDER SECTION ===== -->
+<section class="relative bg-white py-16">
 
-      <div
-        class="flex snap-x snap-mandatory overflow-x-scroll scroll-smooth space-x-6 space-x-reverse"
-        style="scrollbar-width:none;-ms-overflow-style:none;"
-        onscroll="this.style.scrollbarWidth='none'">
+  <!-- Arrows -->
+  <div class="arrow right" onclick="slideRight()">«</div>
+  <div class="arrow left" onclick="slideLeft()">»</div>
 
-        <!-- عن الحزب -->
-        <div class="min-w-full snap-center text-center px-2">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">عن الحزب</h2>
-          <p class="max-w-4xl mx-auto leading-relaxed text-base md:text-lg">
-            حزب جبهة التحرير الوطني (FLN) هو حزب سياسي جزائري تأسس كجناح سياسي لجيش التحرير الوطني خلال ثورة التحرير ضد الاستعمار الفرنسي، وهو يمثل القوة السياسية الأكبر في الجزائر ويرتكز على مبادئ بيان أول نوفمبر 1954، مع العمل على تحقيق الديمقراطية والعدالة الاجتماعية وحماية الثوابت الوطنية، ويُعرف بأنه القوة السياسية الأولى في البلاد ويحافظ على مكانته عبر مختلف المجالس المنتخبة.
+  <div id="slider" class="slider container mx-auto">
+
+    <!-- عن الحزب -->
+    <div class="slide px-6">
+      <div class="flex flex-col md:flex-row items-start gap-8">
+        <img src="https://ultraalgeria.ultrasawt.com/sites/ultraalgeria.ultrasawt.com/files/styles/news_large/public/2022-08/GettyImages-1236749435.jpg.webp?itok=wPEZl9e4" class="w-full md:w-1/2 rounded-lg shadow">
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-4">عن الحزب</h2>
+          <p class="leading-relaxed text-lg text justify">
+            حزب جبهة التحرير الوطني (FLN) هو حزب سياسي جزائري تأسس كجناح سياسي لجيش التحرير الوطني خلال ثورة التحرير ضد الاستعمار الفرنسي، وهو يمثل القوة السياسية الأكبر في الجزائر ويرتكز على مبادئ بيان أول نوفمبر 1954، مع العمل على تحقيق الديمقراطية والعدالة الاجتماعية وحماية الثوابت الوطنية، ويُعرف بأنه القوة السياسية الأولى في البلاد ويحافظ على مكانته عبر مختلف المجالس المنتخبة..
           </p>
         </div>
+      </div>
+    </div>
 
-        <!-- أهداف الحزب -->
-        <div class="min-w-full snap-center text-center px-2">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">أهداف الحزب</h2>
-          <p class="max-w-4xl mx-auto leading-relaxed text-base md:text-lg">
+    <!-- قيم الحزب -->
+    <div class="slide px-6">
+      <div class="flex flex-col md:flex-row items-start gap-8">
+        <img src="https://img.youm7.com/large/201908020828482848.jpg" class="w-full md:w-1/2 rounded-lg shadow">
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-4">قيم الحزب</h2>
+          <p class="leading-relaxed text-lg text-justify">
+            يستمد حزب جبهة التحرير الوطني مبادءه من رسالة نوفمبر الخالدة على أساس الوفاء للشهداء الأبرار ورصيد الحركة الوطنية وكفاح الشعب الجزائري من أجل استعادة سيادته الوطنية ومكانته المرموقة، ومن هذا المنطلق فإن هذا القانون يؤكد تمسك الحزب بمرجعياته الاساسية وقدرته على التكيف مع جميع التطورات التي تفرضها التحولات السياسية والاقتصادية والاجتماعية والثقافية. وبقدر تشبثه بأصالته، فإن حزب جبهة التحرير الوطني يسعى على الدوام إلى العمل على عصرنة أدائه وترقيته في إطار قيم الأمة والشعب..
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- أهداف الحزب -->
+    <div class="slide px-6">
+      <div class="flex flex-col md:flex-row items-start gap-8">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiIzh95KyZfW9YaZOpniugwDHfnKe75TFTg&s"
+             class="w-full md:w-1/2 rounded-lg shadow">
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-4">أهداف الحزب</h2>
+          <p class="leading-relaxed text-lg text-justify">
             يهدف حزب جبهة التحرير الوطني الجزائري (FLN) إلى صون الاستقلال الوطني، وتعزيز الحريات الأساسية، وإقامة نظام جمهوري ديمقراطي، وتحقيق العدالة الاجتماعية ضمن الثوابت الإسلامية، وحماية رموز الثورة الجزائرية، والحفاظ على سلامة التراب الوطني، مع دعم التعددية السياسية والمؤسسات الوطنية المستقلة في إطار دولة القانون.
           </p>
         </div>
-
-        <!-- قيم الحزب -->
-        <div class="min-w-full snap-center text-center px-2">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">قيم الحزب</h2>
-          <p class="max-w-4xl mx-auto leading-relaxed text-base md:text-lg">
-             يستمد حزب جبهة التحرير الوطني مبادءه من رسالة نوفمبر الخالدة على أساس الوفاء للشهداء الأبرار ورصيد الحركة الوطنية وكفاح الشعب الجزائري من أجل استعادة سيادته الوطنية ومكانته المرموقة، ومن هذا المنطلق فإن هذا القانون يؤكد تمسك الحزب بمرجعياته الاساسية وقدرته على التكيف مع جميع التطورات التي تفرضها التحولات السياسية والاقتصادية والاجتماعية والثقافية. وبقدر تشبثه بأصالته، فإن حزب جبهة التحرير الوطني يسعى على الدوام إلى العمل على عصرنة أدائه وترقيته في إطار قيم الأمة والشعب.
-          </p>
-        </div>
-
       </div>
-
     </div>
 
   </div>
+</section>
 
-  <style>
-    /* إخفاء أشرطة السحب نهائيا */
-    section ::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
+<!-- ===== زر الانخراط ===== -->
+<section class="text-center py-12">
+  <a href="#inscription"
+     class="bg-[#006633] text-white text-xl px-10 py-4 rounded-lg shadow hover:bg-green-800">
+    الانخراط الإلكتروني
+  </a>
 </section>
 <!-- ================= MAIN ================= -->
 <main class="container mx-auto px-4 py-6 md:py-10">
