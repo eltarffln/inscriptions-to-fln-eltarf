@@ -53,15 +53,13 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800">
-  <script type="module">
-  // Import the functions you need from the SDKs you need
+
+<!-- ===== Firebase Configuration ===== -->
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyAyLMPmFvc1emOPi0VutMjLKmKAxQKu1IQ",
     authDomain: "flneltarf-c81ed.firebaseapp.com",
@@ -72,22 +70,46 @@
     measurementId: "G-RDRFJD29HM"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+  // ======================
+  // Load dynamic posts from Firestore
+  // ======================
+  async function loadPosts() {
+    const postsContainer = document.getElementById("dynamicPosts");
+    if (!postsContainer) return;
+
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      postsContainer.innerHTML += `
+        <section class="slide px-6">
+          <div class="flex flex-col md:flex-row items-start gap-8">
+            <img src="${data.image}" class="w-full md:w-1/2 rounded-lg shadow">
+            <div class="md:w-1/2">
+              <h2 class="text-3xl font-bold mb-4">${data.title}</h2>
+              <p class="leading-relaxed text-lg text-justify">${data.content}</p>
+            </div>
+          </div>
+        </section>
+      `;
+    });
+  }
+
+  loadPosts();
 </script>
 
 <!-- ===== HEADER ===== -->
 <header class="bg-[#006633] text-white">
   <div class="container mx-auto px-4 py-10 relative flex items-center">
 
-    <!-- اللوقو (يمين) -->
     <img
       src="https://fln.dz/wp-content/uploads/2022/09/logo-fln.png"
       class="absolute right-4 w-20 sm:w-24 md:w-32 object-contain"
       alt="شعار حزب جبهة التحرير الوطني">
 
-    <!-- الكتابة (وسط الهيدر) -->
     <div class="mx-auto text-center">
       <h1 class="title-font font-bold
                  text-2xl sm:text-4xl md:text-6xl
@@ -107,62 +129,13 @@
 <section class="relative bg-white py-16">
   <div class="relative w-full max-w-6xl mx-auto overflow-hidden">
 
-  <!-- ARROWS (PC ONLY) -->
-<div class="arrow right" onclick="slideRight()">«</div>
-  <div class="arrow left" onclick="slideLeft()">»</div>
+    <div class="arrow right" onclick="slideRight()">«</div>
+    <div class="arrow left" onclick="slideLeft()">»</div>
 
-  <div id="slider" class="slider container mx-auto">
-
-    <!-- عن الحزب -->
-    <div class="slide px-6">
-      <div class="flex flex-col md:flex-row items-start gap-8">
-        <img src="https://fln.dz/wp-content/uploads/2023/03/600x300-FLN.png">
-        <div class="md:w-1/2">
-          <h2 class="text-3xl font-bold mb-4">عن الحزب</h2>
-          <p class="leading-relaxed text-lg text-justify">
-             حزب جبهة التحرير الوطني، يظل صمام الأمان في المجتمع، من خلال وسطيته واعتداله ونبذه للتطرف ومساهمته الفعلية والجادة في تعزيز أركان الدولة الوطنية، عبر مؤسساتها الوطنية الصلبة ومشاركة كل أبنائها، والعمل في سبيل دعم استقرارها وأمنها وانسجامها الاجتماعي، في إطار الثوابت الوطنية والهوية الوطنية الجامعة.  
-
-حزب جبهة التحرير الوطني يناضل من أجل تكريس العدالة الاجتماعية واحترام الإرادة الشعبية والحفاظ على وحدة الشعب ووحدة التراب الوطني والعمل من أجل حرية الجزائر وسيادتها، أمنها واستقرارها وتنميتها وتقدمها في جميع المجالات.حزب جبهة التحرير الوطني (FLN) هو حزب سياسي جزائري تأسس كجناح سياسي لجيش التحرير الوطني خلال ثورة التحرير ضد الاستعمار الفرنسي، وهو يمثل القوة السياسية الأكبر في الجزائر ويرتكز على مبادئ بيان أول نوفمبر 1954، مع العمل على تحقيق الديمقراطية والعدالة الاجتماعية وحماية الثوابت الوطنية، ويُعرف بأنه القوة السياسية الأولى في البلاد ويحافظ على مكانته عبر مختلف المجالس المنتخبة..
-          </p>
-        </div>
-      </div>
+    <div id="slider" class="slider container mx-auto">
+      <!-- ===== هذا القسم الآن ديناميكي من Firebase ===== -->
+      <div id="dynamicPosts"></div>
     </div>
-
-    <!-- قيم الحزب -->
-    <div class="slide px-6">
-      <div class="flex flex-col md:flex-row items-start gap-8">
-        <img src="https://img.youm7.com/large/201908020828482848.jpg" class="w-full md:w-1/2 rounded-lg shadow">
-        <div class="md:w-1/2">
-          <h2 class="text-3xl font-bold mb-4">قيم الحزب</h2>
-          <p class="leading-relaxed text-lg text-justify">
-            يستمد حزب جبهة التحرير الوطني مبادءه من رسالة نوفمبر الخالدة على أساس الوفاء للشهداء الأبرار ورصيد الحركة الوطنية وكفاح الشعب الجزائري من أجل استعادة سيادته الوطنية ومكانته المرموقة، ومن هذا المنطلق فإن هذا القانون يؤكد تمسك الحزب بمرجعياته الاساسية وقدرته على التكيف مع جميع التطورات التي تفرضها التحولات السياسية والاقتصادية والاجتماعية والثقافية. وبقدر تشبثه بأصالته، فإن حزب جبهة التحرير الوطني يسعى على الدوام إلى العمل على عصرنة أدائه وترقيته في إطار قيم الأمة والشعب..
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- أهداف الحزب -->
-    <div class="slide px-6">
-      <div class="flex flex-col md:flex-row items-start gap-8">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiIzh95KyZfW9YaZOpniugwDHfnKe75TFTg&s"
-             class="w-full md:w-1/2 rounded-lg shadow">
-        <div class="md:w-1/2">
-          <h2 class="text-3xl font-bold mb-4">أهداف الحزب</h2>
-          <p class="leading-relaxed text-lg text-justify">
-            تمثلت الأهداف المسطرة في الكفاح المسلح من أجل إقامة دولة ديمقراطية اجتماعية ذات سيادة في إطار المبادئ الإسلامية، وإقامة اتحاد مغاربي في إطار محيطه الطبيعي العربي الإسلامي، ومساندة قضايا التحرر في العالم.
-
- ورث حزب جبهة التحرير الوطني جبهة التحرير الوطني، وأصبح الحزب الحاكم في البلاد منذ استقلالها، في الخامس من جويلية  1962 ، وخاض باعتباره التنظيم السياسي الوطني الوحيد في البلاد معركة بناء الدولة الجزائرية الحديثة، علما بأنه تم إقرار تحويل جبهة التحرير الوطني إلى حزب جبهة التحرير الوطني، بمقتضى قرارات مؤتمر الجزائر ودستور 1963. 
-
-بعد اعتماد التعددية السياسية والحزبية، بمقتضى الدستور الصادر في 23 فيفري 1989، ساهم حزب جبهة التحرير الوطني، كحركة سياسية وطنية فاعلة ومؤمنة بالتغيير ومواكبة للأحداث الوطنية والعالمية بتفاعل وإيجابية، في تبني الإصلاحات السياسية وانتقال الجزائر إلى نظام سياسي تعددي.
-
-حزب جبهة التحرير الوطني حزب ذو ديمقراطية داخلية فعلية، حظي في كل الاستحقاقات الانتخابية الأخيرة بالإجماع عليه من طرف الناخبين، انطلاقاً من رسالته، مستمدا ذلك من اعتماده على برنامج تفاعلي في خدمة الشعب الجزائري.
-
-يحتل حزب جبهة التحرير الوطني صدارة الحياة السياسية، فهو القوة السياسية والنضالية الأولى في البلاد، حيث يمثل أكبر كتلة حزبية في كل المجالس المنتخبة، المجالس الشعبية البلدية والولائية، وفي المجلس الشعبي الوطني وكذا في مجلس الأمة.
-          </p>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -173,34 +146,35 @@
     الانخراط الإلكتروني
   </a>
 </section>
+
 <!-- ================= MAIN ================= -->
 <main class="container mx-auto px-4 py-6 md:py-10">
-    <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+  <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
 
-        <!-- الاستمارة (كما هي بدون أي تغيير) -->
-        <iframe
-          id="JotFormIFrame-253493278505060"
-          title="استمارة الانخراط في حزب جبهة التحرير الوطني"
-          onload="window.parent.scrollTo(0,0)"
-          allowtransparency="true"
-          allow="geolocation; microphone; camera; fullscreen; payment"
-          src="https://form.jotform.com/253493278505060"
-          frameborder="0"
-          style="width:100%;height:700px;border:none;"
-          scrolling="no">
-        </iframe>
+    <iframe
+      id="JotFormIFrame-253493278505060"
+      title="استمارة الانخراط في حزب جبهة التحرير الوطني"
+      onload="window.parent.scrollTo(0,0)"
+      allowtransparency="true"
+      allow="geolocation; microphone; camera; fullscreen; payment"
+      src="https://form.jotform.com/253493278505060"
+      frameborder="0"
+      style="width:100%;height:700px;border:none;"
+      scrolling="no">
+    </iframe>
 
-        <script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js"></script>
-        <script>
-          window.jotformEmbedHandler(
-            "iframe[id='JotFormIFrame-253493278505060']",
-            "https://form.jotform.com/"
-          );
-        </script>
+    <script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js"></script>
+    <script>
+      window.jotformEmbedHandler(
+        "iframe[id='JotFormIFrame-253493278505060']",
+        "https://form.jotform.com/"
+      );
+    </script>
 
-    </div>
+  </div>
 </main>
- <!-- ===== FOOTER ===== -->
+
+<!-- ===== FOOTER ===== -->
 <footer class="bg-[#006633] text-white mt-16">
   <div class="container mx-auto px-4 py-10 text-center">
 
@@ -208,7 +182,6 @@
       جهات الاتصال
     </h3>
 
-    <!-- Email -->
     <p class="text-lg mb-4">
       <a href="mailto:eltarffln@gmail.com"
          class="flex items-center justify-center gap-3 hover:underline">
@@ -217,7 +190,6 @@
       </a>
     </p>
 
-    <!-- Facebook -->
     <p class="text-lg mb-6">
       <a href="https://www.facebook.com/profile.php?id=61561485430400"
          target="_blank"
@@ -227,7 +199,6 @@
       </a>
     </p>
 
-    <!-- Copyright -->
     <div class="text-sm opacity-80 border-t border-white/30 pt-4">
       © 2025 حزب جبهة التحرير الوطني – محافظة الطارف
     </div>
@@ -235,7 +206,5 @@
   </div>
 </footer>
 
-  </div>
-</footer>
 
 
